@@ -20,7 +20,7 @@ A simple web app that allows users to track their daily expenses and manage thei
 4. The app will display the balance and alert if you exceed your budget. ⚠️
 
 ## Live Preview 🌐
-[Live ](https://github.com/RM550/Expense-Tracker)
+[Live ][(https://github.com/RM550/Expense-Tracker)]
 
 
 
