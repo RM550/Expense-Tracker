@@ -1,68 +1,65 @@
-const expenseForm = document.getElementById('expense-form');
-const expenseName = document.getElementById('expense-name');
-const expenseAmount = document.getElementById('expense-amount');
-const expenseCategory = document.getElementById('expense-category');
-const expenseCurrency = document.getElementById('expense-currency');
-const expensesList = document.getElementById('expenses');
-const totalDisplay = document.getElementById('total');
+document.getElementById("addExpense").addEventListener("click", addExpense);
+document.getElementById("generateReport").addEventListener("click", generateReport);
+document.getElementById("exportCSV").addEventListener("click", exportCSV);
 
-// Local Storage Data
-let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+let expenses = [];
+let totalExpense = 0;
 
-// Function to Update Expense List
-function updateExpenses() {
-    expensesList.innerHTML = '';
-    let total = {};
+function addExpense() {
+    const category = document.getElementById("category").value;
+    const amount = document.getElementById("amount").value;
+    const date = document.getElementById("date").value;
+    const isRecurring = document.getElementById("recurring").checked;
 
-    expenses.forEach((expense, index) => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-            ${expense.name} - ${expense.currency}${expense.amount} (${expense.category})
-            <button onclick="deleteExpense(${index})">Delete</button>
+    if (!amount || !date) {
+        alert("Please fill all fields");
+        return;
+    }
+
+    const expense = { category, amount: parseFloat(amount), date, recurring: isRecurring };
+    expenses.push(expense);
+    totalExpense += parseFloat(amount);
+    displayExpenses();
+    document.getElementById("amount").value = "";
+    document.getElementById("recurring").checked = false;  // Reset checkbox
+}
+
+function displayExpenses() {
+    const expenseList = document.getElementById("expenseList");
+    expenseList.innerHTML = "";
+    
+    expenses.forEach(expense => {
+        const expenseElement = document.createElement("div");
+        expenseElement.classList.add("expense-item");
+        expenseElement.innerHTML = `
+            <p>${expense.category} - ${expense.amount} USD - ${expense.date} ${expense.recurring ? "(Recurring)" : ""}</p>
         `;
-        expensesList.appendChild(li);
-
-        // Calculate Total for Each Currency
-        if (!total[expense.currency]) {
-            total[expense.currency] = 0;
-        }
-        total[expense.currency] += Number(expense.amount);
+        expenseList.appendChild(expenseElement);
     });
 
-    // Display Totals
-    totalDisplay.innerHTML = Object.entries(total)
-        .map(([currency, amount]) => `${currency} ${amount.toFixed(2)}`)
-        .join(' | ');
-
-    localStorage.setItem('expenses', JSON.stringify(expenses));
+    document.getElementById("totalExpense").innerText = totalExpense;
 }
 
-// Function to Delete Expense
-function deleteExpense(index) {
-    expenses.splice(index, 1);
-    updateExpenses();
+function generateReport() {
+    let report = "Expense Report:\n\n";
+    expenses.forEach(expense => {
+        report += `${expense.category} - ${expense.amount} USD on ${expense.date} ${expense.recurring ? "(Recurring)" : ""}\n`;
+    });
+
+    report += `\nTotal Expense: ${totalExpense} USD`;
+
+    alert(report);
 }
 
-// Form Submit Handler
-expenseForm.addEventListener('submit', (e) => {
-    e.preventDefault();
+function exportCSV() {
+    let csvContent = "Category,Amount,Date,Recurring\n";
+    expenses.forEach(expense => {
+        csvContent += `${expense.category},${expense.amount},${expense.date},${expense.recurring ? "Yes" : "No"}\n`;
+    });
 
-    const expense = {
-        name: expenseName.value,
-        amount: expenseAmount.value,
-        category: expenseCategory.value,
-        currency: expenseCurrency.value,
-    };
-
-    expenses.push(expense);
-    updateExpenses();
-
-    // Clear Form
-    expenseName.value = '';
-    expenseAmount.value = '';
-    expenseCategory.value = 'Food';
-    expenseCurrency.value = 'USD';
-});
-
-// Initialize Expenses on Page Load
-updateExpenses();
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "expenses.csv";
+    link.click();
+}
