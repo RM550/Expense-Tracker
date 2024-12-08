@@ -8,38 +8,44 @@
 </head>
 <body>
     <div class="container">
-        <h1>Expense Tracker</h1>
-
-        <!-- Form to Add Expense -->
-        <form id="expense-form">
-            <input type="text" id="expense-name" placeholder="Expense Name" required>
-            <input type="number" id="expense-amount" placeholder="Amount" required>
-            <select id="expense-category">
-                <option value="Food">Food</option>
-                <option value="Transport">Transport</option>
-                <option value="Shopping">Shopping</option>
-                <option value="Other">Other</option>
-            </select>
-            <select id="expense-currency">
-                <option value="USD">$ (USD)</option>
-                <option value="PKR">₨ (PKR)</option>
-                <option value="EUR">€ (EUR)</option>
-                <option value="GBP">£ (GBP)</option>
-            </select>
-            <button type="submit">Add Expense</button>
-        </form>
+        <header>
+            <h1>Expense Tracker</h1>
+        </header>
         
-
-        <!-- Expense List -->
-        <div id="expense-list">
-            <h2>Expenses</h2>
-            <ul id="expenses"></ul>
-        </div>
-
-        <!-- Total Expense -->
-        <div id="total-expense">
-            <h2>Total: $<span id="total">0</span></h2>
-        </div>
+        <section class="tracker">
+            <div class="form">
+                <label for="category">Category:</label>
+                <select id="category">
+                    <option value="Food">Food</option>
+                    <option value="Transport">Transport</option>
+                    <option value="Bills">Bills</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Others">Others</option>
+                </select>
+                
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" placeholder="Amount" />
+                
+                <label for="date">Date:</label>
+                <input type="date" id="date" />
+                
+                <label for="recurring">Recurring Expense:</label>
+                <input type="checkbox" id="recurring" />
+                
+                <button id="addExpense">Add Expense</button>
+            </div>
+            
+            <div class="expense-summary">
+                <h2>Summary</h2>
+                <div id="expenseList"></div>
+                <h3>Total Expenses: <span id="totalExpense">0</span> USD</h3>
+            </div>
+        </section>
+        
+        <footer>
+            <button id="generateReport">Generate Report</button>
+            <button id="exportCSV">Export to CSV</button>
+        </footer>
     </div>
 
     <script src="script.js"></script>
