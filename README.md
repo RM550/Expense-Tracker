@@ -18,6 +18,11 @@ A simple and advanced **Expense Tracker** built using **HTML**, **CSS**, and **J
 - **Generate Report**: Click the "Generate Report" button to see a detailed report of all your expenses. 📋
 - **Export to CSV**: Download your expenses in CSV format by clicking "Export to CSV". 🔽
 
+## 🧑‍💻 Live Demo:
+Try the live demo below to track your expenses!
+
+[Click here to try the live demo 🌐](https://rm550.github.io/Expense-Tracker/)
+
 ## Technologies Used 🛠️
 
 - **HTML**: For creating the structure and content of the tracker. 🏗️
